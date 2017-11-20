@@ -16,7 +16,10 @@ public class User implements Serializable {
 
 	@Id
 	private String id;
-	private String name;
-	private String nickname;
+	private String userId;
+	private String username;
+	private String fullname;
+	private String biography;
+	private String profilePicUrl;
 
 }
