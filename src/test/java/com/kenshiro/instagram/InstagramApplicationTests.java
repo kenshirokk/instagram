@@ -35,4 +35,9 @@ public class InstagramApplicationTests {
 		instagramService.createUserProfileFromUrl(str2);
 	}
 
+	@Test
+	public void testDownload() throws IOException {
+		instagramService.download("https://www.instagram.com/cuteellyy/");
+	}
+
 }

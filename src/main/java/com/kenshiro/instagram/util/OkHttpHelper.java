@@ -1,6 +1,7 @@
 package com.kenshiro.instagram.util;
 
 import com.google.gson.Gson;
+import com.kenshiro.instagram.json.PageJson;
 import com.kenshiro.instagram.json.SharedDataJson;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,6 +42,15 @@ public class OkHttpHelper {
         matcher.find();
         SharedDataJson sharedDataJson = gson.fromJson(matcher.group(1), SharedDataJson.class);
         return sharedDataJson;
+    }
+
+    public static PageJson getPageJson(String url) throws IOException {
+        Request request = new Request.Builder().url(url).build();
+        String html;
+        try (Response response = client.newCall(request).execute()) {
+            html = response.body().string();
+        }
+        return gson.fromJson(html, PageJson.class);
     }
 
     public static void main(String[] args) throws IOException {

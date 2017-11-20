@@ -1,15 +1,15 @@
 package com.kenshiro.instagram.util;
 
 public enum TypeNameEunm {
-    IMAGE("image"), VIDEO("diveo"), CARD("card");
+    GRAPHIMAGE("GraphImage"), GRAPHSIDECAR("GraphSidecar"), GRAPHVIDEO("GraphVideo");
 
-    private String name;
+    private String value;
 
     TypeNameEunm(String value) {
-        this.name = value;
+        this.value = value;
     }
 
     public String value(){
-        return name;
+        return value;
     }
 }

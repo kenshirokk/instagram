@@ -15,13 +15,13 @@ import java.io.Serializable;
 public class Node implements Serializable {
     @Id
     private String id;
-    private String __typename;
+    private String typeName;
     private String nodeId;
     private String ownerId;
-    private String media_preview;
-    private Boolean is_video;
+    private String mediaPreview;
+    private Boolean isVideo;
     private String code;
     private Long date;
-    private String display_src;
+    private String displaySrc;
     private String caption;
 }
