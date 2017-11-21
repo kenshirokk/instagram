@@ -18,10 +18,12 @@ public class Node implements Serializable {
     private String typeName;
     private String nodeId;
     private String ownerId;
+    private String ownerName;
     private String mediaPreview;
     private Boolean isVideo;
     private String code;
     private Long date;
     private String displaySrc;
     private String caption;
+    private Boolean downloaded;
 }

@@ -1,8 +1,10 @@
 package com.kenshiro.instagram.util;
 
 import com.google.gson.Gson;
+import com.kenshiro.instagram.json.CardDetailJson;
 import com.kenshiro.instagram.json.PageJson;
 import com.kenshiro.instagram.json.SharedDataJson;
+import com.kenshiro.instagram.json.VideoDetailJson;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -24,6 +26,11 @@ public class OkHttpHelper {
         client = new OkHttpClient.Builder().proxy(new Proxy(Proxy.Type.SOCKS,
                 new InetSocketAddress(8081))).build();
     }
+
+    public static OkHttpClient getClient() {
+        return client;
+    }
+
     private OkHttpHelper() {}
 
     public static SharedDataJson.EntryData.ProfilePage.User.Media getMainPageMedia(String url) throws IOException {
@@ -51,6 +58,24 @@ public class OkHttpHelper {
             html = response.body().string();
         }
         return gson.fromJson(html, PageJson.class);
+    }
+
+    public static VideoDetailJson getDetailJson(String url) throws IOException {
+        Request request = new Request.Builder().url(url).build();
+        String html;
+        try (Response response = client.newCall(request).execute()) {
+            html = response.body().string();
+        }
+        return gson.fromJson(html, VideoDetailJson.class);
+    }
+
+    public static CardDetailJson getCardDetailJson(String url) throws IOException {
+        Request request = new Request.Builder().url(url).build();
+        String html;
+        try (Response response = client.newCall(request).execute()) {
+            html = response.body().string();
+        }
+        return gson.fromJson(html, CardDetailJson.class);
     }
 
     public static void main(String[] args) throws IOException {

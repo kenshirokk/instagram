@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -20,21 +20,14 @@
         </div>
 
         <div class="container">
+            <input name="user" id="name" /><button class="btn">addUser</button>
             <table class="table table-hover">
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
+                <tr th:each="user : ${users}">
+                    <td><img th:src="${user.profilePicUrl}" style="width: 10%; height: 10%;"></td>
+                    <td th:text="${user.userId}"></td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.fullname}"></td>
+                    <td th:text="${user.biography}"></td>
                 </tr>
             </table>
         </div>
@@ -60,5 +53,15 @@
             </nav>
         </div>
     </div>
+    <script>
+        $(function () {
+            $(".btn").click(function(){
+                var name = $("#name").val();
+                $.get("/addUser",{"user":name}, function(){
+                    alert(1);
+                })
+            });
+        });
+    </script>
 </body>
 </html>

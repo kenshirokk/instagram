@@ -12,12 +12,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,14 +36,15 @@ public class InstagramService {
     private UserRepository userRepository;
     @Autowired
     private NodeRepository nodeRepository;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public User save(User user) {
         return userRepository.save(user);
     }
 
     public User createUserProfileFromUrl(String url) throws IOException {
-        OkHttpClient client = new OkHttpClient.Builder().proxy(new Proxy(Proxy.Type.SOCKS,
-                new InetSocketAddress(8081))).build();
+        OkHttpClient client = OkHttpHelper.getClient();
         Request request = new Request.Builder().url(url).build();
         String html;
         try (Response response = client.newCall(request).execute()) {
@@ -57,10 +60,15 @@ public class InstagramService {
         u.setFullname(jsonUser.getFull_name());
         u.setBiography(jsonUser.getBiography());
         u.setProfilePicUrl(jsonUser.getProfile_pic_url().replaceAll(picRegex, ""));
+        u.setUrl(url);
         return userRepository.save(u);
     }
 
     public void download(String url) throws IOException {
+
+        SharedDataJson sd = OkHttpHelper.getSharedData(url);
+        String username = sd.getEntry_data().getProfilePage().get(0).getUser().getUsername();
+
         SharedDataJson.EntryData.ProfilePage.User.Media mainPageMedia = OkHttpHelper.getMainPageMedia(url);
         List<SharedDataJson.EntryData.ProfilePage.User.Media.Nodes> nodes = mainPageMedia.getNodes();
         for (SharedDataJson.EntryData.ProfilePage.User.Media.Nodes n : nodes) {
@@ -77,6 +85,7 @@ public class InstagramService {
             node.setMediaPreview(n.getMedia_preview());
             node.setCaption(n.getCaption());
             node.setOwnerId(n.getOwner().getId());
+            node.setOwnerName(username);
             nodeRepository.save(node);
         }
         int count = mainPageMedia.getCount() / 5;
@@ -84,13 +93,13 @@ public class InstagramService {
         Boolean hasNextPage = mainPageMedia.getPage_info().getHas_next_page();
         String endCursor = mainPageMedia.getPage_info().getEnd_cursor();
         while (hasNextPage) {
-            Object[] nextPage = getNextPage(count, ownerId, endCursor);
+            Object[] nextPage = getNextPage(count, ownerId, endCursor, username);
             hasNextPage = (Boolean) nextPage[0];
             endCursor = (String) nextPage[1];
         }
     }
 
-    private Object[] getNextPage(int pageSize, String ownerId, String endCursor) throws IOException {
+    private Object[] getNextPage(int pageSize, String ownerId, String endCursor, String username) throws IOException {
         String nextQueryUrl = "https://www.instagram.com/graphql/query/" +
                 "?query_id=17888483320059182" +
                 "&variables={\"id\":\"{ownerId}\",\"first\":{pageSize},\"after\":\"{endCursor}\"}";
@@ -116,6 +125,7 @@ public class InstagramService {
                 node.setCaption(n.getEdge_media_to_caption().getEdges().get(0).getNode().getText());
             }
             node.setOwnerId(n.getOwner().getId());
+            node.setOwnerName(username);
             nodeRepository.save(node);
         }
         Boolean hasNextPage = pageJson.getData().getUser().getEdge_owner_to_timeline_media().getPage_info().getHas_next_page();
@@ -126,6 +136,14 @@ public class InstagramService {
     public boolean exists(String nodeId) {
         Node node = nodeRepository.findByNodeId(nodeId);
         return node != null;
+    }
+
+    public void updateDownloaded(String nodeId) {
+        mongoTemplate.updateFirst(Query.query(Criteria.where("nodeId").is(nodeId)), Update.update("downloaded", true), Node.class);
+    }
+
+    public List<User> findAllUser() {
+        return userRepository.findAll();
     }
 
 }
