@@ -22,7 +22,7 @@
         <div class="container">
             <div class="form-inline">
                 <input class="form-control" name="user" id="name" />
-                <a class="btn btn-info">addUser</a>
+                <a class="btn btn-info addUser">addUser</a>
                 <a class="btn btn-info" href="/fetchtomongo">fetchToMongo</a>
                 <a class="btn btn-info" href="/download">download</a>
             </div>
@@ -60,7 +60,7 @@
     </div>
     <script>
         $(function () {
-            $(".btn").click(function(){
+            $(".addUser").click(function(){
                 var name = $("#name").val();
                 $.get("/addUser",{"user":name}, function(){
                     alert(1);

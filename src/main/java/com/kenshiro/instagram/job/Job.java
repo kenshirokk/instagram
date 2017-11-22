@@ -55,6 +55,7 @@ public class Job {
     public void download() {
         log.info("download");
         List<Node> nodes = nodeRepository.findByDownloadedExistsOrDownloadedIsFalse(false);
+        log.info("download: downloaded false size [{}]", nodes.size());
         nodes.forEach(node -> {
             if (TypeNameEunm.GRAPHIMAGE.value().equalsIgnoreCase(node.getTypeName())) {
                 String dir = node.getOwnerName() + "/";
