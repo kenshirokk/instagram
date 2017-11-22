@@ -20,10 +20,15 @@
         </div>
 
         <div class="container">
-            <input name="user" id="name" /><button class="btn">addUser</button>
+            <div class="form-inline">
+                <input class="form-control" name="user" id="name" />
+                <a class="btn btn-info">addUser</a>
+                <a class="btn btn-info" href="/fetchtomongo">fetchToMongo</a>
+                <a class="btn btn-info" href="/download">download</a>
+            </div>
             <table class="table table-hover">
                 <tr th:each="user : ${users}">
-                    <td><img th:src="${user.profilePicUrl}" style="width: 10%; height: 10%;"></td>
+                    <td style="width: 150px; height: 150px;"><img th:src="${user.profilePicUrl}" class="img-responsive"></td>
                     <td th:text="${user.userId}"></td>
                     <td th:text="${user.username}"></td>
                     <td th:text="${user.fullname}"></td>

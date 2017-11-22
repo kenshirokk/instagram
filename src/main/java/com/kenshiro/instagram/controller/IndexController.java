@@ -36,17 +36,15 @@ public class IndexController {
 		instagramService.createUserProfileFromUrl(user);
 	}
 
-	@GetMapping("job")
+	@GetMapping("download")
     @ResponseBody
-	public void test() {
-        List<User> users = instagramService.findAllUser();
-        users.forEach(n->{
-            try {
-                instagramService.download(n.getUrl());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+	public void download() {
 		job.download();
+	}
+
+	@GetMapping("fetchtomongo")
+	@ResponseBody
+	public void fetchToMongo() {
+		job.fetchToMongo();
 	}
 }

@@ -83,6 +83,7 @@ public class Job {
                         try {
                             downloadFile(display_url, dir, code + ext1);
                             downloadFile(video_url, dir, code + ext2);
+                            instagramService.updateDownloaded(node.getNodeId());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -108,6 +109,7 @@ public class Job {
                             exe.submit(() -> {
                                 try {
                                     downloadFile(display_url1, dir, s + display_url1.substring(display_url1.lastIndexOf(".")));
+                                    instagramService.updateDownloaded(n.getNode().getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -120,6 +122,7 @@ public class Job {
                             exe.submit(() -> {
                                 try {
                                     downloadFile(video_url, dir + Constant.VIDEO_FOLDER, s + video_url.substring(video_url.lastIndexOf(".")));
+                                    instagramService.updateDownloaded(n.getNode().getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -129,11 +132,11 @@ public class Job {
                     exe.submit(() -> {
                         try {
                             downloadFile(display_url, dir, code + display_url.substring(display_url.lastIndexOf(".")));
+                            instagramService.updateDownloaded(node.getNodeId());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     });
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
