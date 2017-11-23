@@ -5,7 +5,6 @@ import com.kenshiro.instagram.document.User;
 import com.kenshiro.instagram.repository.NodeRepository;
 import com.kenshiro.instagram.service.InstagramService;
 import com.mongodb.client.result.UpdateResult;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +28,7 @@ public class InstagramApplicationTests {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	@Test
+//	@Test
 	public void testSave() {
 		User u = new User();
 		u.setUserId("123123");
@@ -39,7 +38,7 @@ public class InstagramApplicationTests {
 		instagramService.save(u);
 	}
 
-	@Test
+//	@Test
 	public void testCreateUserProfileFromUrl() throws IOException {
 		String str1 = "https://www.instagram.com/katherinebaby.hjx/";
 		String str2 = "https://www.instagram.com/cuteellyy/";
@@ -47,7 +46,7 @@ public class InstagramApplicationTests {
 		instagramService.createUserProfileFromUrl(str2);
 	}
 
-	@Test
+//	@Test
 	public void testDownload() throws IOException {
 		new Thread(() -> {
             try {
@@ -70,19 +69,19 @@ public class InstagramApplicationTests {
 //		instagramService.download("https://www.instagram.com/katherinebaby.hjx/");
 	}
 
-	@Test
+//	@Test
 	public void testNotDownloaded() {
 		List<Node> nodes = nodeRepository.findByDownloadedExistsOrDownloadedIsFalse(false);
 		System.out.println(nodes.size());
 	}
 
-	@Test
+//	@Test
 	public void testUpdateDownloaded() {
 		UpdateResult updateResult = mongoTemplate.updateFirst(Query.query(Criteria.where("nodeId").is("1650408232416760436")), Update.update("downloaded", true), Node.class);
 		System.out.println(updateResult);
 	}
 
-	@Test
+//	@Test
 	public void testFindAll() {
 		List<Node> all = nodeRepository.findAll();
 		System.out.println(all.size());
