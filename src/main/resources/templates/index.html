@@ -9,6 +9,13 @@
     <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
     <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/masonry/4.2.0/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-infinitescroll/3.0.2/infinite-scroll.pkgd.min.js"></script>
+    <style>
+        .grid-item{
+            width: 25%;
+        }
+    </style>
 </head>
 <body class="">
     <div class="">
@@ -35,28 +42,16 @@
                     <td th:text="${user.biography}"></td>
                 </tr>
             </table>
+            <!--<div class="container" >
+                <img th:each="node : ${nodes}" th:src="|http://localhost/${node.ownerName}/${node.code}.jpg|" alt="">
+            </div>-->
         </div>
-        <div class="container">
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+        <div class="container-fluid sss">
+            <div class="grid">
+                <img th:each="node : ${nodes}" th:src="|http://localhost/${node.ownerName}/${node.code}.jpg|" class="grid-item">
+            </div>
         </div>
+        <div class="pagination__next" href="/recent?page=2"></div>
     </div>
     <script>
         $(function () {
@@ -65,6 +60,20 @@
                 $.get("/addUser",{"user":name}, function(){
                     alert(1);
                 })
+            });
+
+            $('.grid').masonry({
+                // options
+                itemSelector: '.grid-item',
+                horizontalOrder: false,
+                percentPosition: true,
+                fitWidth: true,
+                columnWidth: 0
+            });
+            var $container= $('.sss').infiniteScroll({
+                // options
+                path: '.pagination__next',
+                append: '.grid'
             });
         });
     </script>
