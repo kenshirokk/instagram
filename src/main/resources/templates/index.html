@@ -1,81 +1,80 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Title</title>
 
-    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcss.com/masonry/4.2.0/masonry.pkgd.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-infinitescroll/3.0.2/infinite-scroll.pkgd.min.js"></script>
     <style>
-        .grid-item{
+        .grid-item {
             width: 25%;
         }
     </style>
 </head>
 <body class="">
-    <div class="">
-        <div class="container">
-            <div class="alert alert-success">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                Hello, <strong>WebJars!</strong>
-            </div>
+<div class="">
+    <div class="container">
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+            Hello, <strong>WebJars!</strong>
         </div>
-
-        <div class="container">
-            <div class="form-inline">
-                <input class="form-control" name="user" id="name" />
-                <a class="btn btn-info addUser">addUser</a>
-                <a class="btn btn-info" href="/fetchtomongo">fetchToMongo</a>
-                <a class="btn btn-info" href="/download">download</a>
-            </div>
-            <table class="table table-hover">
-                <tr th:each="user : ${users}">
-                    <td style="width: 150px; height: 150px;"><img th:src="${user.profilePicUrl}" class="img-responsive"></td>
-                    <td th:text="${user.userId}"></td>
-                    <td th:text="${user.username}"></td>
-                    <td th:text="${user.fullname}"></td>
-                    <td th:text="${user.biography}"></td>
-                </tr>
-            </table>
-            <!--<div class="container" >
-                <img th:each="node : ${nodes}" th:src="|http://localhost/${node.ownerName}/${node.code}.jpg|" alt="">
-            </div>-->
-        </div>
-        <div class="container-fluid sss">
-            <div class="grid">
-                <img th:each="node : ${nodes}" th:src="|http://localhost/${node.ownerName}/${node.code}.jpg|" class="grid-item">
-            </div>
-        </div>
-        <div class="pagination__next" href="/recent?page=2"></div>
     </div>
-    <script>
-        $(function () {
-            $(".addUser").click(function(){
-                var name = $("#name").val();
-                $.get("/addUser",{"user":name}, function(){
-                    alert(1);
-                })
-            });
 
-            $('.grid').masonry({
-                // options
-                itemSelector: '.grid-item',
-                horizontalOrder: false,
-                percentPosition: true,
-                fitWidth: true,
-                columnWidth: 0
-            });
-            var $container= $('.sss').infiniteScroll({
-                // options
-                path: '.pagination__next',
-                append: '.grid'
-            });
+    <div class="container">
+        <div class="form-inline">
+            <input class="form-control" name="user" id="name"/>
+            <a class="btn btn-info addUser">addUser</a>
+            <a class="btn btn-info" href="/fetchtomongo">fetchToMongo</a>
+            <a class="btn btn-info" href="/download">download</a>
+        </div>
+        <table class="table table-hover">
+            <tr th:each="user : ${users}">
+                <td style="width: 150px; height: 150px;"><img th:src="${user.profilePicUrl}" class="img-responsive">
+                </td>
+                <td th:text="${user.userId}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.fullname}"></td>
+                <td th:text="${user.biography}"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="container-fluid sss">
+        <div class="grid">
+            <img th:each="node : ${nodes}" th:src="|http://localhost/${node.ownerName}/${node.code}.jpg|"
+                 class="grid-item">
+        </div>
+    </div>
+    <div class="pagination__next" href="/recent?page=2"></div>
+</div>
+<script>
+    $(function () {
+        $(".addUser").click(function () {
+            var name = $("#name").val();
+            $.get("/addUser", {"user": name}, function () {
+                alert(1);
+            })
         });
-    </script>
+
+        $('.grid').masonry({
+            // options
+            itemSelector: '.grid-item',
+            horizontalOrder: false,
+            percentPosition: true,
+            fitWidth: true,
+            columnWidth: 0
+        });
+        var $container = $('.sss').infiniteScroll({
+            // options
+            path: '.pagination__next',
+            append: '.grid'
+        });
+    });
+</script>
 </body>
 </html>
