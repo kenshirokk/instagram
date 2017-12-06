@@ -134,8 +134,8 @@ public class InstagramService {
     }
 
     public boolean exists(String nodeId) {
-        Node node = nodeRepository.findByNodeId(nodeId);
-        return node != null;
+        Long node = nodeRepository.countByNodeId(nodeId);
+        return node.compareTo(1L) >= 0;
     }
 
     public void updateDownloaded(String nodeId) {

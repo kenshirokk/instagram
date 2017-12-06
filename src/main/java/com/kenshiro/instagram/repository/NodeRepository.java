@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface NodeRepository extends MongoRepository<Node, String> {
-    Node findByNodeId(String nodeId);
+    Long countByNodeId(String nodeId);
     List<Node> findByDownloadedExistsOrDownloadedIsFalse(boolean exists);
     Page<Node> findByIsVideoIsFalse(Pageable pageable);
 }

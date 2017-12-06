@@ -5,6 +5,7 @@ import com.kenshiro.instagram.document.User;
 import com.kenshiro.instagram.repository.NodeRepository;
 import com.kenshiro.instagram.service.InstagramService;
 import com.mongodb.client.result.UpdateResult;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -85,5 +86,17 @@ public class InstagramApplicationTests {
 	public void testFindAll() {
 		List<Node> all = nodeRepository.findAll();
 		System.out.println(all.size());
+	}
+
+//	@Test
+	public void testCountByNodeId() {
+		Long aLong = nodeRepository.countByNodeId("1650566563651529270");
+		System.out.println(aLong);
+	}
+
+//	@Test
+	public void testExist() {
+		boolean exists = instagramService.exists("1650566563651529270");
+		System.out.println(exists);
 	}
 }
