@@ -5,7 +5,6 @@ import com.kenshiro.instagram.document.User;
 import com.kenshiro.instagram.repository.NodeRepository;
 import com.kenshiro.instagram.service.InstagramService;
 import com.mongodb.client.result.UpdateResult;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,7 +77,7 @@ public class InstagramApplicationTests {
 
 //	@Test
 	public void testUpdateDownloaded() {
-		UpdateResult updateResult = mongoTemplate.updateFirst(Query.query(Criteria.where("nodeId").is("1650408232416760436")), Update.update("downloaded", true), Node.class);
+		UpdateResult updateResult = mongoTemplate.updateMulti(Query.query(Criteria.where("nodeId").is("1650408232416760436")), Update.update("downloaded", true), Node.class);
 		System.out.println(updateResult);
 	}
 

@@ -139,7 +139,7 @@ public class InstagramService {
     }
 
     public void updateDownloaded(String nodeId) {
-        mongoTemplate.updateFirst(Query.query(Criteria.where("nodeId").is(nodeId)), Update.update("downloaded", true), Node.class);
+        mongoTemplate.updateMulti(Query.query(Criteria.where("nodeId").is(nodeId)), Update.update("downloaded", true), Node.class);
     }
 
     public List<User> findAllUser() {
