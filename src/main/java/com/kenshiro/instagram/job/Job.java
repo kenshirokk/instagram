@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -35,7 +36,7 @@ public class Job {
     @Autowired
     private NodeRepository nodeRepository;
 
-//    @Scheduled(cron = "0 */10 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void fetchToMongo() {
         log.info("fetchToMongo");
         List<User> allUser = instagramService.findAllUser();
@@ -51,7 +52,7 @@ public class Job {
         });
     }
 
-//    @Scheduled(cron = "* * */1 * * ?")
+    @Scheduled(cron = "0 */2 * * * ?")
     public void download() {
         log.info("download");
         List<Node> nodes = nodeRepository.findByDownloadedExistsOrDownloadedIsFalse(false);
