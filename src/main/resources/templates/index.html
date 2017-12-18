@@ -32,6 +32,7 @@
             <a class="btn btn-info" href="/fetchtomongo">fetchToMongo</a>
             <a class="btn btn-info" href="/download">download</a>
         </div>
+
         <table class="table table-hover">
             <tr th:each="user : ${users}">
                 <td style="width: 150px; height: 150px;"><img th:src="${user.profilePicUrl}" class="img-responsive">
