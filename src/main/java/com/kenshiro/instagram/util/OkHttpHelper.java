@@ -64,6 +64,9 @@ public class OkHttpHelper {
         Request request = new Request.Builder().url(url).build();
         String html;
         try (Response response = client.newCall(request).execute()) {
+            if (response.code() == 404) {
+                return null;
+            }
             html = response.body().string();
         }
         return gson.fromJson(html, VideoDetailJson.class);

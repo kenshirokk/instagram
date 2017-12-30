@@ -77,6 +77,9 @@ public class Job {
                 url = url.replace("{code}", code);
                 try {
                     VideoDetailJson videoDetailJson = OkHttpHelper.getDetailJson(url);
+                    if (videoDetailJson == null) {
+                        return;
+                    }
                     String display_url = videoDetailJson.getGraphql().getShortcode_media().getDisplay_url().replaceAll(Constant.PIC_REGEX, "");
                     String video_url = videoDetailJson.getGraphql().getShortcode_media().getVideo_url();
                     String ext1 = display_url.substring(display_url.lastIndexOf("."));
