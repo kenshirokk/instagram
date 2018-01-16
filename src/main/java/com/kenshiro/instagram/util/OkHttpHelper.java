@@ -1,6 +1,7 @@
 package com.kenshiro.instagram.util;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.kenshiro.instagram.json.CardDetailJson;
 import com.kenshiro.instagram.json.PageJson;
 import com.kenshiro.instagram.json.SharedDataJson;
@@ -78,7 +79,12 @@ public class OkHttpHelper {
         try (Response response = client.newCall(request).execute()) {
             html = response.body().string();
         }
-        return gson.fromJson(html, CardDetailJson.class);
+        try {
+            return gson.fromJson(html, CardDetailJson.class);
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void main(String[] args) throws IOException {

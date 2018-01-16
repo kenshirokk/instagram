@@ -57,7 +57,7 @@ public class Job {
         log.info("download");
         List<Node> nodes = nodeRepository.findByDownloadedExistsOrDownloadedIsFalse(false);
         log.info("download: downloaded false size [{}]", nodes.size());
-        nodes.forEach(node -> {
+        for (Node node : nodes) {
             if (TypeNameEunm.GRAPHIMAGE.value().equalsIgnoreCase(node.getTypeName())) {
                 String dir = node.getOwnerName() + "/";
                 String fileName = node.getCode() + node.getDisplaySrc().substring(node.getDisplaySrc().lastIndexOf("."));
@@ -70,7 +70,7 @@ public class Job {
                     }
                 });
             }
-            if(TypeNameEunm.GRAPHVIDEO.value().equalsIgnoreCase(node.getTypeName())) {
+            if (TypeNameEunm.GRAPHVIDEO.value().equalsIgnoreCase(node.getTypeName())) {
                 String dir = node.getOwnerName() + Constant.VIDEO_FOLDER;
                 String code = node.getCode();
                 String url = Constant.DETAIL_URL;
@@ -78,7 +78,7 @@ public class Job {
                 try {
                     VideoDetailJson videoDetailJson = OkHttpHelper.getDetailJson(url);
                     if (videoDetailJson == null) {
-                        return;
+                        continue;
                     }
                     String display_url = videoDetailJson.getGraphql().getShortcode_media().getDisplay_url().replaceAll(Constant.PIC_REGEX, "");
                     String video_url = videoDetailJson.getGraphql().getShortcode_media().getVideo_url();
@@ -104,6 +104,9 @@ public class Job {
                 url = url.replace("{code}", code);
                 try {
                     CardDetailJson cardDetailJson = OkHttpHelper.getCardDetailJson(url);
+                    if (cardDetailJson == null) {
+                        continue;
+                    }
                     String display_url = cardDetailJson.getGraphql().getShortcode_media().getDisplay_url();
                     List<CardDetailJson.Graphql.ShortcodeMedia.EdgeSidecarToChildren.EdgesXXXX> edges = cardDetailJson.getGraphql().getShortcode_media().getEdge_sidecar_to_children().getEdges();
                     edges.forEach(n -> {
@@ -146,7 +149,7 @@ public class Job {
                     e.printStackTrace();
                 }
             }
-        });
+        }
     }
 
     private void downloadFile(String url, String dir, String fileName) throws IOException {

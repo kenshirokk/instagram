@@ -19,7 +19,7 @@
 </head>
 <body class="">
 <div class="">
-    <div class="container">
+    <!-- <div class="container">
         <div class="alert alert-success">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
             Hello, <strong>WebJars!</strong>
@@ -43,7 +43,7 @@
                 <td th:text="${user.biography}"></td>
             </tr>
         </table>
-    </div>
+    </div> -->
     <div class="container-fluid sss">
         <div class="grid">
             <img th:each="node : ${nodes}" th:src="|http://localhost/${node.ownerName}/${node.code}.jpg|"
