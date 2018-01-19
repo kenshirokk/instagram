@@ -24,8 +24,9 @@ public class OkHttpHelper {
 
     private static OkHttpClient client;
     static {
-        client = new OkHttpClient.Builder().proxy(new Proxy(Proxy.Type.SOCKS,
-                new InetSocketAddress(8081))).build();
+        client = new OkHttpClient.Builder()
+                .proxy(new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(8081)))
+                .build();
     }
 
     public static OkHttpClient getClient() {
