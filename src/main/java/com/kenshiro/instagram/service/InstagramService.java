@@ -67,6 +67,9 @@ public class InstagramService {
     public void download(String url) throws IOException {
 
         SharedDataJson sd = OkHttpHelper.getSharedData(url);
+        if (sd.getEntry_data() == null || sd.getEntry_data().getProfilePage() == null) {
+            return;
+        }
         String username = sd.getEntry_data().getProfilePage().get(0).getUser().getUsername();
 
         SharedDataJson.EntryData.ProfilePage.User.Media mainPageMedia = OkHttpHelper.getMainPageMedia(url);
