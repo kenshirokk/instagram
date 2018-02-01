@@ -88,7 +88,14 @@ public class OkHttpHelper {
         return null;
     }
 
+    public static String get(String url) throws IOException {
+        Request request = new Request.Builder().url(url).build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-//        OkHttpHelper.getMainPagePics("https://www.instagram.com/katherinebaby.hjx/");
+        System.out.println(OkHttpHelper.get("https://www.instagram.com"));
     }
 }
