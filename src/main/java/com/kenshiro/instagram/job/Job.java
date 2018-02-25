@@ -56,11 +56,14 @@ public class Job {
     public void download() {
         log.info("download");
         List<Node> nodes = nodeRepository.findByDownloadedExistsOrDownloadedIsFalse(false);
-        log.info("download: downloaded false size [{}]", nodes.size());
+        if (nodes.size() > 0) {
+            log.info("download: downloaded false size [{}]", nodes.size());
+        }
         for (Node node : nodes) {
             if (TypeNameEunm.GRAPHIMAGE.value().equalsIgnoreCase(node.getTypeName())) {
                 String dir = node.getOwnerName() + "/";
-                String fileName = node.getCode() + node.getDisplaySrc().substring(node.getDisplaySrc().lastIndexOf("."));
+                String fileName = node.getCode() + node.getDisplaySrc().substring(node.getDisplaySrc().lastIndexOf("" +
+                        "."));
                 exe.submit(() -> {
                     try {
                         downloadFile(node.getDisplaySrc(), dir, fileName);
@@ -80,7 +83,8 @@ public class Job {
                     if (videoDetailJson == null) {
                         continue;
                     }
-                    String display_url = videoDetailJson.getGraphql().getShortcode_media().getDisplay_url().replaceAll(Constant.PIC_REGEX, "");
+                    String display_url = videoDetailJson.getGraphql().getShortcode_media().getDisplay_url()
+                            .replaceAll(Constant.PIC_REGEX, "");
                     String video_url = videoDetailJson.getGraphql().getShortcode_media().getVideo_url();
                     String ext1 = display_url.substring(display_url.lastIndexOf("."));
                     String ext2 = video_url.substring(video_url.lastIndexOf("."));
@@ -108,7 +112,8 @@ public class Job {
                         continue;
                     }
                     String display_url = cardDetailJson.getGraphql().getShortcode_media().getDisplay_url();
-                    List<CardDetailJson.Graphql.ShortcodeMedia.EdgeSidecarToChildren.EdgesXXXX> edges = cardDetailJson.getGraphql().getShortcode_media().getEdge_sidecar_to_children().getEdges();
+                    List<CardDetailJson.Graphql.ShortcodeMedia.EdgeSidecarToChildren.EdgesXXXX> edges =
+                            cardDetailJson.getGraphql().getShortcode_media().getEdge_sidecar_to_children().getEdges();
                     edges.forEach(n -> {
                         if (TypeNameEunm.GRAPHIMAGE.value().equalsIgnoreCase(n.getNode().get__typename())) {
                             String shortcode = n.getNode().getShortcode();
@@ -116,7 +121,8 @@ public class Job {
                             String s = code + "[" + shortcode + "]";
                             exe.submit(() -> {
                                 try {
-                                    downloadFile(display_url1, dir, s + display_url1.substring(display_url1.lastIndexOf(".")));
+                                    downloadFile(display_url1, dir, s + display_url1.substring
+                                            (display_url1.lastIndexOf(".")));
                                     instagramService.updateDownloaded(n.getNode().getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -129,7 +135,8 @@ public class Job {
                             String s = code + "[" + shortcode + "]";
                             exe.submit(() -> {
                                 try {
-                                    downloadFile(video_url, dir + Constant.VIDEO_FOLDER, s + video_url.substring(video_url.lastIndexOf(".")));
+                                    downloadFile(video_url, dir + Constant.VIDEO_FOLDER, s + video_url.substring
+                                            (video_url.lastIndexOf(".")));
                                     instagramService.updateDownloaded(n.getNode().getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
