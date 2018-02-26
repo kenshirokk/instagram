@@ -38,7 +38,7 @@ public class Job {
 
     @Scheduled(cron = "0 */1 * * * ?")
     public void fetchToMongo() {
-        log.info("fetchToMongo");
+//        log.info("fetchToMongo");
         List<User> allUser = instagramService.findAllUser();
         allUser.forEach(u -> {
             String url = u.getUrl();
@@ -54,7 +54,7 @@ public class Job {
 
     @Scheduled(cron = "0 */2 * * * ?")
     public void download() {
-        log.info("download");
+//        log.info("download");
         List<Node> nodes = nodeRepository.findByDownloadedExistsOrDownloadedIsFalse(false);
         if (nodes.size() > 0) {
             log.info("download: downloaded false size [{}]", nodes.size());
